@@ -1,10 +1,14 @@
 import 'package:contactsapp_backend/contactsapp_backend.dart'
     as contactsapp_backend;
+import 'package:mongo_dart/mongo_dart.dart';
 
-void main(List<String> arguments) {
+void main(List<String> arguments) async {
   // Connect and load collection
-
-  // Create server
+  final db = await Db.create(
+      'mongodb+srv://admin:root@cluster0.5nwsw.mongodb.net/?retryWrites=true&w=majority');
+  await db.open();
+  final coll = db.collection("contacts");
+  print("Database opened");
 
   // Create routes
 
