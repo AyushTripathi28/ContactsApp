@@ -24,7 +24,10 @@ void main(List<String> arguments) async {
   app.mount('/contacts-ws/', ContactsSocketApi(coll).router);
 
   // Listen for incoming connections
-  final handler = Pipeline().addMiddleware(logRequests()).addHandler(app);
+  final handler = Pipeline()
+      .addMiddleware(logRequests())
+      .addMiddleware(handleCors())
+      .addHandler(app);
 
   withHotreload(() => serve(handler, InternetAddress.anyIPv4, port));
 }
