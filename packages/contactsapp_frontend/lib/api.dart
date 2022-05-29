@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 class Contact extends Equatable {
@@ -58,4 +59,6 @@ class ContactsSocketApi {
         final decoded = json.decode(data);
         return (decoded as List).map((json) => Contact.fromJson(json)).toList();
       });
+
+  ValueChanged<String> get send => _api.sink.add;
 }
