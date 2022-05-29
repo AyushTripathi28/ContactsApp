@@ -1,8 +1,6 @@
 import 'dart:io';
 
-import 'package:contactsapp_backend/contacts_rest_api.dart';
-import 'package:contactsapp_backend/contactsapp_backend.dart'
-    as contactsapp_backend;
+import 'package:contactsapp_backend/contactsapp_backend.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart';
@@ -23,6 +21,7 @@ void main(List<String> arguments) async {
 
   // Create routes
   app.mount('/contacts/', ContactRestApi(coll).router);
+  app.mount('/contacts-ws/', ContactsSocketApi(coll).router);
 
   // Listen for incoming connections
   final handler = Pipeline().addMiddleware(logRequests()).addHandler(app);
