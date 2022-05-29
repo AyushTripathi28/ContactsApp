@@ -1,7 +1,10 @@
+import 'package:contactsapp_frontend/contactsapp_frontend.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({Key? key, required this.api}) : super(key: key);
+
+  final ContactsRestApi api;
 
   @override
   State<HomePage> createState() => _HomePageState();
