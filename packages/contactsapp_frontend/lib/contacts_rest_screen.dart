@@ -66,7 +66,7 @@ class _ContactRestScreenState extends State<ContactRestScreen> {
                     ),
                   ));
                 },
-                icon: Icon(Icons.next_plan))
+                icon: const Icon(Icons.next_plan))
           ],
         ),
         body: _isLoading
@@ -82,7 +82,7 @@ class _ContactRestScreenState extends State<ContactRestScreen> {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             FloatingActionButton(
-              heroTag: Text("refresh"),
+              heroTag: const Text("refresh"),
               onPressed: _loadContacts,
               tooltip: "Refresh List",
               backgroundColor: Colors.purpleAccent,
@@ -94,7 +94,7 @@ class _ContactRestScreenState extends State<ContactRestScreen> {
               width: 10,
             ),
             FloatingActionButton(
-              heroTag: Text("rest-add"),
+              heroTag: const Text("rest-add"),
               onPressed: _addContact,
               tooltip: "Add new contacts",
               child: const Icon(
