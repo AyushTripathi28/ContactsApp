@@ -1,4 +1,5 @@
 import 'package:contactsapp_frontend/contactsapp_frontend.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 class ContactsList extends StatelessWidget {
@@ -19,31 +20,44 @@ class ContactsList extends StatelessWidget {
         ? _NoContact(
             onAdd: onAdd,
           )
-        : ListView(
-            children: [
-              ...data.map(
-                (contact) => Padding(
-                  key: ValueKey(contact.id),
-                  padding: EdgeInsets.symmetric(vertical: 10),
-                  child: ListTile(
-                    leading: CircleAvatar(
-                      radius: 30,
-                      child: Text(contact.initials),
-                    ),
-                    title: Text(
-                      contact.name,
-                      style: TextStyle(fontSize: 20),
-                    ),
-                    trailing: MaterialButton(
-                      onPressed: (() {
-                        onDelete(contact.id);
-                      }),
-                      child: Icon(Icons.delete),
+        : ScrollConfiguration(
+            behavior: ScrollConfiguration.of(context).copyWith(
+              dragDevices: {
+                PointerDeviceKind.touch,
+                PointerDeviceKind.mouse,
+              },
+            ),
+            child: ListView(
+              children: [
+                ...data.map(
+                  (contact) => Padding(
+                    key: ValueKey(contact.id),
+                    padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                    child: ListTile(
+                      contentPadding: EdgeInsets.all(0),
+                      leading: CircleAvatar(
+                        radius: 30,
+                        child: Text(contact.initials),
+                      ),
+                      title: Text(
+                        contact.name,
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      subtitle: Text(
+                        contact.email,
+                        style: TextStyle(fontSize: 12),
+                      ),
+                      trailing: MaterialButton(
+                        onPressed: (() {
+                          onDelete(contact.id);
+                        }),
+                        child: Icon(Icons.delete),
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           );
   }
 }

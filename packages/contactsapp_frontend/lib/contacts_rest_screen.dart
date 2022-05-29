@@ -23,7 +23,6 @@ class _ContactRestScreenState extends State<ContactRestScreen> {
 
   void _loadContacts() async {
     final contacts = await widget.api.getContacts();
-    print(contacts);
     setState(() {
       _contacts = contacts;
       _isLoading = false;
@@ -33,9 +32,11 @@ class _ContactRestScreenState extends State<ContactRestScreen> {
   void _addContact() async {
     final faker = Faker();
     final person = faker.person;
-    final fullName = '${person.firstName()} ${person.lastName()}';
 
-    final createContact = await widget.api.addContact(fullName);
+    final fullName = '${person.firstName()} ${person.lastName()}';
+    final email = faker.internet.email();
+
+    final createContact = await widget.api.addContact(fullName, email);
     setState(() {
       _contacts.add(createContact);
     });
@@ -50,41 +51,58 @@ class _ContactRestScreenState extends State<ContactRestScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Contacts App'),
-      ),
-      body: _isLoading
-          ? const Center(
-              child: CircularProgressIndicator(),
-            )
-          : ContactsList(
-              data: _contacts,
-              onDelete: _deleteContact,
-              onAdd: _addContact,
-            ),
-      floatingActionButton: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          FloatingActionButton(
-            onPressed: _loadContacts,
-            tooltip: "Refresh List",
-            backgroundColor: Colors.purpleAccent,
-            child: const Icon(
-              Icons.refresh,
-            ),
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text(
+            'Contacts App',
           ),
-          const SizedBox(
-            width: 10,
-          ),
-          FloatingActionButton(
-            onPressed: _addContact,
-            tooltip: "Add new contacts",
-            child: const Icon(
-              Icons.person_add,
+          actions: [
+            IconButton(
+                onPressed: () {
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    builder: (context) => ContactSocketScreen(
+                      api: ContactsSocketApi(),
+                    ),
+                  ));
+                },
+                icon: Icon(Icons.next_plan))
+          ],
+        ),
+        body: _isLoading
+            ? const Center(
+                child: CircularProgressIndicator(),
+              )
+            : ContactsList(
+                data: _contacts,
+                onDelete: _deleteContact,
+                onAdd: _addContact,
+              ),
+        floatingActionButton: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            FloatingActionButton(
+              heroTag: Text("refresh"),
+              onPressed: _loadContacts,
+              tooltip: "Refresh List",
+              backgroundColor: Colors.purpleAccent,
+              child: const Icon(
+                Icons.refresh,
+              ),
             ),
-          ),
-        ],
+            const SizedBox(
+              width: 10,
+            ),
+            FloatingActionButton(
+              heroTag: Text("rest-add"),
+              onPressed: _addContact,
+              tooltip: "Add new contacts",
+              child: const Icon(
+                Icons.person_add,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

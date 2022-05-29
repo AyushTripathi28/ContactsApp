@@ -18,12 +18,12 @@ class ContactsSocketApi {
         print(data);
 
         if (data['action'] == 'ADD') {
-          await store.insert({'name': data['payload']});
+          await store.insert({'name': data['name'], 'email': data['email']});
         }
 
         if (data['action'] == 'DELETE') {
           await store.deleteOne({
-            '_id': ObjectId.fromHexString(data['payload']),
+            '_id': ObjectId.fromHexString(data['id']),
           });
         }
 

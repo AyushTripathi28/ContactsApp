@@ -7,22 +7,24 @@ import 'package:flutter/material.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 class Contact extends Equatable {
-  const Contact._(this.id, this.name, this.initials);
+  const Contact._(this.id, this.name, this.email, this.initials);
 
   final String id;
   final String name;
+  final String email;
   final String initials;
 
   factory Contact.fromJson(Map<String, dynamic> json) {
     final name = json['name'];
+    final email = json['email'];
     final names = name.split(' ');
     final initials = names[0].substring(0, 1) + names[1].substring(0, 1);
 
-    return Contact._(json['_id'], name, initials);
+    return Contact._(json['_id'], name, email, initials);
   }
 
   @override
-  List<String> get props => [id, name, initials];
+  List<String> get props => [id, name, email, initials];
 }
 
 class ContactsRestApi {
@@ -40,8 +42,8 @@ class ContactsRestApi {
         .toList();
   }
 
-  Future<Contact> addContact(String name) async {
-    final res = await _api.post('', data: {'name': name});
+  Future<Contact> addContact(String name, String email) async {
+    final res = await _api.post('', data: {'name': name, 'email': email});
     return Contact.fromJson(res.data);
   }
 

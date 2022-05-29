@@ -36,40 +36,58 @@ class _ContactSocketScreenState extends State<ContactSocketScreen> {
     final faker = Faker();
     final person = faker.person;
     final fullName = '${person.firstName()} ${person.lastName()}';
+    final email = faker.internet.email();
 
     widget.api.send(json.encode({
       'action': 'ADD',
-      'payload': fullName,
+      'name': fullName,
+      'email': email,
     }));
   }
 
   void _deleteContact(String id) {
-    widget.api.send(json.encode({'action': 'DELETE', 'payload': id}));
+    widget.api.send(json.encode({'action': 'DELETE', 'id': id}));
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text("Contacts App")),
-      body: StreamBuilder<List<Contact>>(
-        initialData: [],
-        stream: _socketStream.stream,
-        builder: (context, snapshot) {
-          if (_isLoading) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          return ContactsList(
-              data: snapshot.data!,
-              onDelete: _deleteContact,
-              onAdd: _addContact);
-        },
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _addContact,
-        tooltip: "Add new contact",
-        child: Icon(Icons.person_add),
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text("Contacts App"),
+          actions: [
+            IconButton(
+                onPressed: () {
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    builder: (context) => ContactRestScreen(
+                      api: ContactsRestApi(),
+                    ),
+                  ));
+                },
+                icon: const Icon(Icons.next_plan))
+          ],
+        ),
+        body: StreamBuilder<List<Contact>>(
+          initialData: const [],
+          stream: _socketStream.stream,
+          builder: (context, snapshot) {
+            if (_isLoading) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            return ContactsList(
+                data: snapshot.data!,
+                onDelete: _deleteContact,
+                onAdd: _addContact);
+          },
+        ),
+        floatingActionButton: FloatingActionButton(
+          heroTag: const Text("ws-add"),
+          onPressed: _addContact,
+          tooltip: "Add new contact",
+          child: const Icon(Icons.person_add),
+        ),
       ),
     );
   }
