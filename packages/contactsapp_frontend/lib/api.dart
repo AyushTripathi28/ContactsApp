@@ -1,10 +1,12 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 
 class Contact extends Equatable {
-  Contact._(this.id, this.name, this.initials);
+  const Contact._(this.id, this.name, this.initials);
 
   final String id;
   final String name;
@@ -24,7 +26,7 @@ class Contact extends Equatable {
 
 class ContactsRestApi {
   final _api = Dio(BaseOptions(
-    baseUrl: 'http://localhost:8001/contacts/',
+    baseUrl: 'http://192.168.1.106:8001/contacts/',
     headers: {
       'Content-Type': ContentType.json.mimeType,
     },
@@ -43,4 +45,17 @@ class ContactsRestApi {
   }
 
   Future deleteContact(String id) => _api.delete(id);
+}
+
+class ContactsSocketApi {
+  ContactsSocketApi()
+      : _api = WebSocketChannel.connect(
+            Uri.parse('ws://192.168.1.106:8001/contacts-ws/'));
+
+  final WebSocketChannel _api;
+
+  Stream<List<Contact>> get stream => _api.stream.map<List<Contact>>((data) {
+        final decoded = json.decode(data);
+        return (decoded as List).map((json) => Contact.fromJson(json)).toList();
+      });
 }
