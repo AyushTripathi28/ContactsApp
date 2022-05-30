@@ -1,9 +1,11 @@
+import 'package:contactsapp_frontend/contactsapp_frontend.dart';
 import 'dart:async';
 import 'dart:convert';
-
-import 'package:contactsapp_frontend/contactsapp_frontend.dart';
 import 'package:faker/faker.dart';
-import 'package:flutter/material.dart';
+
+// ----------------------------------------------------------------------------
+// WEBSOCKET UI SCREEN
+// ----------------------------------------------------------------------------
 
 class ContactSocketScreen extends StatefulWidget {
   const ContactSocketScreen({Key? key, required this.api}) : super(key: key);
@@ -17,11 +19,16 @@ class ContactSocketScreen extends StatefulWidget {
 class _ContactSocketScreenState extends State<ContactSocketScreen> {
   final _socketStream = StreamController<List<Contact>>();
   bool _isLoading = true;
+
   @override
   void initState() {
     super.initState();
     _loadContacts();
   }
+
+// ----------------------------------------------------------------------------
+// WEBSOCKET API work start.
+// ----------------------------------------------------------------------------
 
   void _loadContacts() {
     widget.api
@@ -33,6 +40,7 @@ class _ContactSocketScreenState extends State<ContactSocketScreen> {
   }
 
   void _addContact() {
+    // FAKER for generating random name and email for contacts details.
     final faker = Faker();
     final person = faker.person;
     final fullName = '${person.firstName()} ${person.lastName()}';
@@ -49,38 +57,36 @@ class _ContactSocketScreenState extends State<ContactSocketScreen> {
     widget.api.send(json.encode({'action': 'DELETE', 'id': id}));
   }
 
+// ----------------------------------------------------------------------------
+// WEBSOCKET API Work END.
+// ----------------------------------------------------------------------------
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Contacts App - WebSocket"),
-        centerTitle: true,
-        elevation: 0,
-        backgroundColor: Colors.transparent,
         actions: [
           IconButton(
               onPressed: () {
-                Navigator.of(context).pushReplacement(MaterialPageRoute(
-                  builder: (context) => ContactRestScreen(
-                    api: ContactsRestApi(),
-                  ),
-                ));
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          ContactRestScreen(api: ContactsRestApi())),
+                );
               },
-              icon: const Icon(
-                Icons.next_plan,
-                color: Color(0xff08D9D6),
-              ))
+              icon: const Icon(Icons.next_plan, color: Color(0xff08D9D6))),
         ],
+        centerTitle: true,
+        elevation: 0,
+        backgroundColor: Colors.transparent,
       ),
-      backgroundColor: Color(0xff222831),
       body: StreamBuilder<List<Contact>>(
         initialData: const [],
         stream: _socketStream.stream,
         builder: (context, snapshot) {
           if (_isLoading) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            return const Center(child: CircularProgressIndicator());
           }
           return ContactsList(
               data: snapshot.data!,
@@ -92,12 +98,10 @@ class _ContactSocketScreenState extends State<ContactSocketScreen> {
         heroTag: const Text("ws-add"),
         onPressed: _addContact,
         tooltip: "Add new contact",
-        backgroundColor: Color(0xffEEEEEE),
-        child: const Icon(
-          Icons.person_add,
-          color: Color(0xff393E46),
-        ),
+        backgroundColor: const Color(0xffEEEEEE),
+        child: const Icon(Icons.person_add, color: Color(0xff393E46)),
       ),
+      backgroundColor: const Color(0xff222831),
     );
   }
 }

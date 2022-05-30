@@ -1,10 +1,13 @@
+import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
+
+// ----------------------------------------------------------------------------
+// Created this modal class for Contacts that store data comming json to dart.
+// ----------------------------------------------------------------------------
 
 class Contact extends Equatable {
   const Contact._(this.id, this.name, this.email, this.initials);
@@ -26,6 +29,10 @@ class Contact extends Equatable {
   @override
   List<String> get props => [id, name, email, initials];
 }
+
+// ----------------------------------------------------------------------------
+// REST API work that connect with backend and all the CRUD operation.
+// ----------------------------------------------------------------------------
 
 class ContactsRestApi {
   final _api = Dio(BaseOptions(
@@ -49,6 +56,10 @@ class ContactsRestApi {
 
   Future deleteContact(String id) => _api.delete(id);
 }
+
+// ----------------------------------------------------------------------------
+// WEB SOCKET work that connect with backend and all the CRUD operation.
+// ----------------------------------------------------------------------------
 
 class ContactsSocketApi {
   ContactsSocketApi()

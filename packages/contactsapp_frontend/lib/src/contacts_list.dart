@@ -1,6 +1,5 @@
 import 'package:contactsapp_frontend/contactsapp_frontend.dart';
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
 
 class ContactsList extends StatelessWidget {
   const ContactsList(
@@ -36,16 +35,16 @@ class ContactsList extends StatelessWidget {
                         const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                     child: Container(
                       decoration: BoxDecoration(
-                          color: Color(0xff393E46),
+                          color: const Color(0xff393E46),
                           borderRadius: BorderRadius.circular(10)),
                       child: ListTile(
                         contentPadding: const EdgeInsets.only(left: 5),
                         leading: CircleAvatar(
-                          backgroundColor: Color(0xff00ADB5),
+                          backgroundColor: const Color(0xff00ADB5),
                           radius: 25,
                           child: Text(
                             contact.initials,
-                            style: TextStyle(
+                            style: const TextStyle(
                                 color: Color(0xff222831),
                                 fontWeight: FontWeight.bold),
                           ),

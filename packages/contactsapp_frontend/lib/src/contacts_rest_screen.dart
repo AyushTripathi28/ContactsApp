@@ -1,6 +1,9 @@
 import 'package:contactsapp_frontend/contactsapp_frontend.dart';
 import 'package:faker/faker.dart';
-import 'package:flutter/material.dart';
+
+// ----------------------------------------------------------------------------
+// REST API UI SCREEN.
+// ----------------------------------------------------------------------------
 
 class ContactRestScreen extends StatefulWidget {
   const ContactRestScreen({Key? key, required this.api}) : super(key: key);
@@ -21,6 +24,9 @@ class _ContactRestScreenState extends State<ContactRestScreen> {
     _loadContacts();
   }
 
+// ----------------------------------------------------------------------------
+// REST API work start.
+// ----------------------------------------------------------------------------
   void _loadContacts() async {
     final contacts = await widget.api.getContacts();
     setState(() {
@@ -30,6 +36,7 @@ class _ContactRestScreenState extends State<ContactRestScreen> {
   }
 
   void _addContact() async {
+    // FAKER for generating random name and email for contacts details.
     final faker = Faker();
     final person = faker.person;
 
@@ -49,42 +56,32 @@ class _ContactRestScreenState extends State<ContactRestScreen> {
     });
   }
 
+// ----------------------------------------------------------------------------
+//  REST API work END.
+// ----------------------------------------------------------------------------
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // systemOverlayStyle: SystemUiOverlayStyle(
-        //   systemNavigationBarColor: Colors.blue,
-        //   systemNavigationBarDividerColor: Colors.black,
-        //   // Navigation bar
-        //   // statusBarColor: Colors.pink, // Status bar
-        // ),
-        title: const Text(
-          'Contacts App - Rest API',
-        ),
-        centerTitle: true,
-        elevation: 0,
-        backgroundColor: Colors.transparent,
+        title: const Text('Contacts App - Rest API'),
         actions: [
           IconButton(
               onPressed: () {
-                Navigator.of(context).pushReplacement(MaterialPageRoute(
-                  builder: (context) => ContactSocketScreen(
-                    api: ContactsSocketApi(),
-                  ),
-                ));
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          ContactSocketScreen(api: ContactsSocketApi())),
+                );
               },
-              icon: const Icon(
-                Icons.next_plan,
-                color: Color(0xff08D9D6),
-              ))
+              icon: const Icon(Icons.next_plan, color: Color(0xff08D9D6))),
         ],
+        centerTitle: true,
+        elevation: 0,
+        backgroundColor: Colors.transparent,
       ),
-      backgroundColor: Color(0xff222831),
       body: _isLoading
-          ? const Center(
-              child: CircularProgressIndicator(),
-            )
+          ? const Center(child: CircularProgressIndicator())
           : ContactsList(
               data: _contacts,
               onDelete: _deleteContact,
@@ -97,27 +94,20 @@ class _ContactRestScreenState extends State<ContactRestScreen> {
             heroTag: const Text("refresh"),
             onPressed: _loadContacts,
             tooltip: "Refresh List",
-            backgroundColor: Color(0xffEEEEEE),
-            child: const Icon(
-              Icons.refresh,
-              color: Color(0xff393E46),
-            ),
+            backgroundColor: const Color(0xffEEEEEE),
+            child: const Icon(Icons.refresh, color: Color(0xff393E46)),
           ),
-          const SizedBox(
-            width: 10,
-          ),
+          const SizedBox(width: 10),
           FloatingActionButton(
             heroTag: const Text("rest-add"),
-            backgroundColor: Color(0xffEEEEEE),
+            backgroundColor: const Color(0xffEEEEEE),
             onPressed: _addContact,
             tooltip: "Add new contacts",
-            child: const Icon(
-              Icons.person_add,
-              color: Color(0xff393E46),
-            ),
+            child: const Icon(Icons.person_add, color: Color(0xff393E46)),
           ),
         ],
       ),
+      backgroundColor: const Color(0xff222831),
     );
     // );
   }
