@@ -51,42 +51,51 @@ class _ContactSocketScreenState extends State<ContactSocketScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text("Contacts App"),
-          actions: [
-            IconButton(
-                onPressed: () {
-                  Navigator.of(context).pushReplacement(MaterialPageRoute(
-                    builder: (context) => ContactRestScreen(
-                      api: ContactsRestApi(),
-                    ),
-                  ));
-                },
-                icon: const Icon(Icons.next_plan))
-          ],
-        ),
-        body: StreamBuilder<List<Contact>>(
-          initialData: const [],
-          stream: _socketStream.stream,
-          builder: (context, snapshot) {
-            if (_isLoading) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-            return ContactsList(
-                data: snapshot.data!,
-                onDelete: _deleteContact,
-                onAdd: _addContact);
-          },
-        ),
-        floatingActionButton: FloatingActionButton(
-          heroTag: const Text("ws-add"),
-          onPressed: _addContact,
-          tooltip: "Add new contact",
-          child: const Icon(Icons.person_add),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Contacts App - WebSocket"),
+        centerTitle: true,
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        actions: [
+          IconButton(
+              onPressed: () {
+                Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  builder: (context) => ContactRestScreen(
+                    api: ContactsRestApi(),
+                  ),
+                ));
+              },
+              icon: const Icon(
+                Icons.next_plan,
+                color: Color(0xff08D9D6),
+              ))
+        ],
+      ),
+      backgroundColor: Color(0xff222831),
+      body: StreamBuilder<List<Contact>>(
+        initialData: const [],
+        stream: _socketStream.stream,
+        builder: (context, snapshot) {
+          if (_isLoading) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          return ContactsList(
+              data: snapshot.data!,
+              onDelete: _deleteContact,
+              onAdd: _addContact);
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        heroTag: const Text("ws-add"),
+        onPressed: _addContact,
+        tooltip: "Add new contact",
+        backgroundColor: Color(0xffEEEEEE),
+        child: const Icon(
+          Icons.person_add,
+          color: Color(0xff393E46),
         ),
       ),
     );

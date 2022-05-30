@@ -32,26 +32,43 @@ class ContactsList extends StatelessWidget {
                 ...data.map(
                   (contact) => Padding(
                     key: ValueKey(contact.id),
-                    padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                    child: ListTile(
-                      contentPadding: EdgeInsets.all(0),
-                      leading: CircleAvatar(
-                        radius: 30,
-                        child: Text(contact.initials),
-                      ),
-                      title: Text(
-                        contact.name,
-                        style: TextStyle(fontSize: 20),
-                      ),
-                      subtitle: Text(
-                        contact.email,
-                        style: TextStyle(fontSize: 12),
-                      ),
-                      trailing: MaterialButton(
-                        onPressed: (() {
-                          onDelete(contact.id);
-                        }),
-                        child: Icon(Icons.delete),
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: Color(0xff393E46),
+                          borderRadius: BorderRadius.circular(10)),
+                      child: ListTile(
+                        contentPadding: const EdgeInsets.only(left: 5),
+                        leading: CircleAvatar(
+                          backgroundColor: Color(0xff00ADB5),
+                          radius: 25,
+                          child: Text(
+                            contact.initials,
+                            style: TextStyle(
+                                color: Color(0xff222831),
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        title: Text(
+                          contact.name,
+                          style: const TextStyle(
+                              fontSize: 20, color: Color(0xffEEEEEE)),
+                        ),
+                        subtitle: Text(
+                          contact.email,
+                          style: const TextStyle(
+                              fontSize: 12, color: Color(0xffEEEEEE)),
+                        ),
+                        trailing: MaterialButton(
+                          onPressed: (() {
+                            onDelete(contact.id);
+                          }),
+                          child: const Icon(
+                            Icons.delete,
+                            color: Color(0xff00ADB5),
+                          ),
+                        ),
                       ),
                     ),
                   ),
@@ -80,7 +97,7 @@ class _NoContact extends StatelessWidget {
           ),
           const Text(
             "No Contacts Listed",
-            style: const TextStyle(fontSize: 20),
+            style: TextStyle(fontSize: 20),
           ),
           const SizedBox(
             height: 30,

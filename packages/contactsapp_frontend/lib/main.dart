@@ -12,11 +12,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Contacts App',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: ContactSocketScreen(
-        api: ContactsSocketApi(),
+      home: ContactRestScreen(
+        api: ContactsRestApi(),
       ),
     );
   }

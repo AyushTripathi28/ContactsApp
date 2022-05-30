@@ -29,7 +29,7 @@ class Contact extends Equatable {
 
 class ContactsRestApi {
   final _api = Dio(BaseOptions(
-    baseUrl: 'http://192.168.1.106:8001/contacts/',
+    baseUrl: 'http://192.168.1.103:8001/contacts/',
     headers: {
       'Content-Type': ContentType.json.mimeType,
     },
@@ -53,7 +53,7 @@ class ContactsRestApi {
 class ContactsSocketApi {
   ContactsSocketApi()
       : _api = WebSocketChannel.connect(
-            Uri.parse('ws://192.168.1.106:8001/contacts-ws/'));
+            Uri.parse('ws://192.168.1.103:8001/contacts-ws/'));
 
   final WebSocketChannel _api;
 

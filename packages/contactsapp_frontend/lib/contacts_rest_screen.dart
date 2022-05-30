@@ -51,59 +51,74 @@ class _ContactRestScreenState extends State<ContactRestScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text(
-            'Contacts App',
+    return Scaffold(
+      appBar: AppBar(
+        // systemOverlayStyle: SystemUiOverlayStyle(
+        //   systemNavigationBarColor: Colors.blue,
+        //   systemNavigationBarDividerColor: Colors.black,
+        //   // Navigation bar
+        //   // statusBarColor: Colors.pink, // Status bar
+        // ),
+        title: const Text(
+          'Contacts App - Rest API',
+        ),
+        centerTitle: true,
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        actions: [
+          IconButton(
+              onPressed: () {
+                Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  builder: (context) => ContactSocketScreen(
+                    api: ContactsSocketApi(),
+                  ),
+                ));
+              },
+              icon: const Icon(
+                Icons.next_plan,
+                color: Color(0xff08D9D6),
+              ))
+        ],
+      ),
+      backgroundColor: Color(0xff222831),
+      body: _isLoading
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : ContactsList(
+              data: _contacts,
+              onDelete: _deleteContact,
+              onAdd: _addContact,
+            ),
+      floatingActionButton: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FloatingActionButton(
+            heroTag: const Text("refresh"),
+            onPressed: _loadContacts,
+            tooltip: "Refresh List",
+            backgroundColor: Color(0xffEEEEEE),
+            child: const Icon(
+              Icons.refresh,
+              color: Color(0xff393E46),
+            ),
           ),
-          actions: [
-            IconButton(
-                onPressed: () {
-                  Navigator.of(context).pushReplacement(MaterialPageRoute(
-                    builder: (context) => ContactSocketScreen(
-                      api: ContactsSocketApi(),
-                    ),
-                  ));
-                },
-                icon: const Icon(Icons.next_plan))
-          ],
-        ),
-        body: _isLoading
-            ? const Center(
-                child: CircularProgressIndicator(),
-              )
-            : ContactsList(
-                data: _contacts,
-                onDelete: _deleteContact,
-                onAdd: _addContact,
-              ),
-        floatingActionButton: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            FloatingActionButton(
-              heroTag: const Text("refresh"),
-              onPressed: _loadContacts,
-              tooltip: "Refresh List",
-              backgroundColor: Colors.purpleAccent,
-              child: const Icon(
-                Icons.refresh,
-              ),
+          const SizedBox(
+            width: 10,
+          ),
+          FloatingActionButton(
+            heroTag: const Text("rest-add"),
+            backgroundColor: Color(0xffEEEEEE),
+            onPressed: _addContact,
+            tooltip: "Add new contacts",
+            child: const Icon(
+              Icons.person_add,
+              color: Color(0xff393E46),
             ),
-            const SizedBox(
-              width: 10,
-            ),
-            FloatingActionButton(
-              heroTag: const Text("rest-add"),
-              onPressed: _addContact,
-              tooltip: "Add new contacts",
-              child: const Icon(
-                Icons.person_add,
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
+    // );
   }
 }
