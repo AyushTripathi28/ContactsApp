@@ -1,11 +1,11 @@
-import 'dart:io';
-
 import 'package:contactsapp_backend/contactsapp_backend.dart';
-import 'package:mongo_dart/mongo_dart.dart';
-import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart';
 import 'package:shelf_hotreload/shelf_hotreload.dart';
-import 'package:shelf_router/shelf_router.dart';
+
+// ----------------------------------------------------------------------------
+// Backend code for Contacts app using dart, DB using MONGO DB,
+// Worked on both REST API and WEB SOCKET.
+// ----------------------------------------------------------------------------
 
 void main(List<String> arguments) async {
   // Connect and load collection
@@ -19,7 +19,7 @@ void main(List<String> arguments) async {
   const port = 8001;
   final app = Router();
 
-  // Create routes
+  // Create routes for both REST and WEBSOCKET API
   app.mount('/contacts/', ContactRestApi(coll).router);
   app.mount('/contacts-ws/', ContactsSocketApi(coll).router);
 

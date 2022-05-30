@@ -1,9 +1,9 @@
-import 'dart:convert';
-import 'dart:io';
+import 'package:contactsapp_backend/contactsapp_backend.dart';
 
-import 'package:mongo_dart/mongo_dart.dart';
-import 'package:shelf/shelf.dart';
-import 'package:shelf_router/shelf_router.dart';
+// ----------------------------------------------------------------------------
+// BACKEND PART FOR REST API
+// Created ends point for get, post and delete.
+// ----------------------------------------------------------------------------
 
 class ContactRestApi {
   ContactRestApi(this.store);

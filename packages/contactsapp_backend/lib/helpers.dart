@@ -1,5 +1,9 @@
 import 'package:shelf/shelf.dart';
 
+// ----------------------------------------------------------------------------
+// Helper function for middleware to allow web services methods over web.
+// ----------------------------------------------------------------------------
+
 Middleware handleCors() {
   const corsHeaders = {
     'Access-Control-Allow-Origin': '*',
