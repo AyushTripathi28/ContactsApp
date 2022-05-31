@@ -56,6 +56,15 @@ class _ContactRestScreenState extends State<ContactRestScreen> {
     });
   }
 
+  void _updateContact(Contact contact) async {
+    final createContact =
+        await widget.api.updateContact(contact.id, contact.name, contact.email);
+    setState(() {
+      _contacts.removeWhere((c) => c.id == contact.id);
+      _contacts.add(createContact);
+    });
+  }
+
 // ----------------------------------------------------------------------------
 //  REST API work END.
 // ----------------------------------------------------------------------------
@@ -86,6 +95,7 @@ class _ContactRestScreenState extends State<ContactRestScreen> {
               data: _contacts,
               onDelete: _deleteContact,
               onAdd: _addContact,
+              onUpdate: _updateContact,
             ),
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.end,

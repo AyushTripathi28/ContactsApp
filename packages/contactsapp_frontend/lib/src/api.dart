@@ -10,7 +10,7 @@ import 'package:web_socket_channel/web_socket_channel.dart';
 // ----------------------------------------------------------------------------
 
 class Contact extends Equatable {
-  const Contact._(this.id, this.name, this.email, this.initials);
+  const Contact(this.id, this.name, this.email, this.initials);
 
   final String id;
   final String name;
@@ -23,7 +23,7 @@ class Contact extends Equatable {
     final names = name.split(' ');
     final initials = names[0].substring(0, 1) + names[1].substring(0, 1);
 
-    return Contact._(json['_id'], name, email, initials);
+    return Contact(json['_id'], name, email, initials);
   }
 
   @override
@@ -36,7 +36,7 @@ class Contact extends Equatable {
 
 class ContactsRestApi {
   final _api = Dio(BaseOptions(
-    baseUrl: 'http://192.168.1.103:8001/contacts/',
+    baseUrl: 'http://192.168.1.104:8001/contacts/',
     headers: {
       'Content-Type': ContentType.json.mimeType,
     },
@@ -54,6 +54,11 @@ class ContactsRestApi {
     return Contact.fromJson(res.data);
   }
 
+  Future<Contact> updateContact(String id, String name, String email) async {
+    final res = await _api.put(id, data: {'name': name, 'email': email});
+    return Contact.fromJson(res.data);
+  }
+
   Future deleteContact(String id) => _api.delete(id);
 }
 
@@ -64,7 +69,7 @@ class ContactsRestApi {
 class ContactsSocketApi {
   ContactsSocketApi()
       : _api = WebSocketChannel.connect(
-            Uri.parse('ws://192.168.1.103:8001/contacts-ws/'));
+            Uri.parse('ws://192.168.1.104:8001/contacts-ws/'));
 
   final WebSocketChannel _api;
 

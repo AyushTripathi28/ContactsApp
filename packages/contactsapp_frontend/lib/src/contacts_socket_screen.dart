@@ -57,6 +57,15 @@ class _ContactSocketScreenState extends State<ContactSocketScreen> {
     widget.api.send(json.encode({'action': 'DELETE', 'id': id}));
   }
 
+  void _updateContact(Contact contact) {
+    widget.api.send(json.encode({
+      'action': 'UPDATE',
+      'id': contact.id,
+      'name': contact.name,
+      'email': contact.email
+    }));
+  }
+
 // ----------------------------------------------------------------------------
 // WEBSOCKET API Work END.
 // ----------------------------------------------------------------------------
@@ -89,9 +98,11 @@ class _ContactSocketScreenState extends State<ContactSocketScreen> {
             return const Center(child: CircularProgressIndicator());
           }
           return ContactsList(
-              data: snapshot.data!,
-              onDelete: _deleteContact,
-              onAdd: _addContact);
+            data: snapshot.data!,
+            onDelete: _deleteContact,
+            onAdd: _addContact,
+            onUpdate: _updateContact,
+          );
         },
       ),
       floatingActionButton: FloatingActionButton(
