@@ -29,6 +29,16 @@ class ContactsSocketApi {
           });
         }
 
+        if (data['action'] == 'UPDATE') {
+          await store.updateOne(
+            where.eq('_id', ObjectId.fromHexString(data['id'])),
+            modify.set('name', data['name']),
+          );
+          await store.updateOne(
+              where.eq('_id', ObjectId.fromHexString(data['id'])),
+              modify.set('email', data['email']));
+        }
+
         final contacts = await store.find().toList();
         for (final ws in _sockets) {
           ws.sink.add(json.encode(contacts));

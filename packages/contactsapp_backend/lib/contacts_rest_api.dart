@@ -46,6 +46,32 @@ class ContactRestApi {
       return Response.ok('Deleted $id');
     });
 
+    app.put('/<id|.+>', (
+      Request req,
+      String id,
+    ) async {
+      final payload = await req.readAsString();
+      final data = json.decode(payload);
+      await store.updateOne(
+        where.eq('_id', ObjectId.fromHexString(id)),
+        modify.set('name', data['name']),
+      );
+      await store.updateOne(
+        where.eq('_id', ObjectId.fromHexString(id)),
+        modify.set('email', data['email']),
+      );
+
+      // return Response.ok('Updates $id');
+      final addedEntry = await store.findOne(where.eq('name', data['name']));
+      return Response(
+        HttpStatus.created,
+        body: json.encode(addedEntry),
+        headers: {
+          'Content-Type': ContentType.json.mimeType,
+        },
+      );
+    });
+
     return app;
   }
 }
